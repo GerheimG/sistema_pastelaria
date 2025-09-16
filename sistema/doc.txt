@@ -109,3 +109,26 @@ CREATE TABLE itens_pedido (
 - Ter apenas 5 pastéis cadastrados manualmente no banco (sem área de cadastro)
 - Fazer o carrinho funcionar com $_SESSION
 - Focar no fluxo cliente → pedido → admin vê e altera status
+
+
+
+DER
+
++------------+          +-------------------+          +--------------------+
+|   Pastel   |          |      Pedido       |          |     ItemPedido     |
++------------+          +-------------------+          +--------------------+
+| PK id      |1       N | PK id             |1       N | PK id              |
+| nome       |----------| data_hora         |----------| FK pedido_id       |
+| preco      |          | status            |          | FK pastel_id       |
+| imagem     |          | total             |          | quantidade         |
++------------+          | FK usuario_id     |          | preco_unitario     |
+                        +-------------------+          +--------------------+
+
+                             1
+Usuário                      |
++-------------------+        |
+| PK id             |--------
+| nome              |
+| email             |
+| senha             |
++-------------------+
