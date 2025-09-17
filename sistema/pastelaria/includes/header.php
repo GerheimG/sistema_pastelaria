@@ -1,3 +1,10 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,9 +17,11 @@
         <div class="container">
             <h1> Pastelaria Do Fidelim</h1>
             <nav class="menu">
-                <a href="index.php">Cardápio</a>
+                <a href="cardapio.php">Cardápio</a>
                 <a href="carrinho.php">Carrinho</a>
-                <a href="login.php">Admin</a>
+                <?php if (isset($_SESSION['usuario_id'])): ?>
+                    <a href="logout.php" class="btn-logout">Sair</a>
+                <?php endif; ?>
             </nav>
         </div>
     </header>
@@ -54,5 +63,18 @@
 
         .menu a:hover {
             color: #000;
+        }
+
+        .btn-logout {
+            display: inline-block;
+            padding: 10px 16px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
         }
 </style>

@@ -1,60 +1,121 @@
-<?php 
-// Inclui o arquivo de conexão com o banco de dados
-include("includes/db.php"); 
-
-// Inclui o cabeçalho da página
-include("includes/header.php"); 
-?>
-
 <?php
-// Consulta SQL para buscar todos os pastéis cadastrados no banco
-$sql = "SELECT * FROM pasteis";
+session_start();
+include("includes/db.php");
 
-// Executa a consulta e armazena o resultado na variável $resultado
-$resultado = $conn->query($sql);
-?>
+// Se o usuário já está logado, redireciona para o cardápio (ou área admin)
+if (isset($_SESSION['usuario_id'])) {
+    if ($_SESSION['usuario_login'] === 'admin') {
+        header("Location: admin.php");
+    } else {
+        header("Location: cardapio.php");
+    }
+    exit();
+}
 
-<h1>Cardápio de Pastéis</h1>
+$erro = '';
 
-<!-- Container principal que vai abrigar todos os cards de pastéis -->
-<div class="cardapio">
-    <?php
-    // Verifica se existem registros retornados do banco
-    if ($resultado->num_rows > 0) {
-        // Loop para percorrer todos os pastéis encontrados
-        while ($pastel = $resultado->fetch_assoc()) {
-            ?>
-            <!-- Card individual de cada pastel -->
-            <div class="pastel">
-                <!-- Imagem do pastel (o nome do arquivo vem do banco de dados) -->
-                <img src="image/<?php echo htmlspecialchars($pastel['imagem']); ?>" alt="<?php echo htmlspecialchars($pastel['nome']); ?>">
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login = mysqli_real_escape_string($conn, $_POST['login']);
+    $senha = $_POST['senha'];
 
-                <!-- Nome do pastel -->
-                <h3><?php echo htmlspecialchars($pastel['nome']); ?></h3>
+    // Busca o usuário no banco pelo login
+    $sql = "SELECT * FROM usuarios WHERE login = '$login' LIMIT 1";
+    $resultado = $conn->query($sql);
 
-                <!-- Preço do pastel formatado com vírgula -->
-                <p class='preco'>Preço: R$ <?php echo number_format($pastel['preco'], 2, ',', '.'); ?></p>
+    if ($resultado && $resultado->num_rows === 1) {
+        $usuario = $resultado->fetch_assoc();
 
-                <form method="post" action="carrinho.php">
-                    <input type="hidden" name="id" value="<?php echo $pastel['id']; ?>">
-                    <button type="submit" class="btn-carrinho">Adicionar ao Carrinho</button>
-                </form>
-            </div>
-            <?php
+        // Verifica a senha (para teste simples, texto puro; ideal usar password_hash)
+        if ($senha === $usuario['senha']) {
+            // Login válido, salva na sessão
+            $_SESSION['usuario_id'] = $usuario['id'];
+            $_SESSION['usuario_login'] = $usuario['login'];
+
+            // Redireciona conforme o usuário
+            if ($usuario['login'] === 'admin') {
+                header("Location: admin/pedidos.php");
+            } else {
+                header("Location: cardapio.php");
+            }
+            exit();
+        } else {
+            $erro = "Senha incorreta.";
         }
     } else {
-        // Caso não haja nenhum pastel no banco, exibe uma mensagem
-        echo "<p>Nenhum pastel cadastrado ainda.</p>";
+        $erro = "Usuário não encontrado.";
     }
-    ?>
-</div>
-
-<?php 
-// Inclui o rodapé da página
-include("includes/footer.php"); 
+}
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login - Pastelaria</title>
+    <link rel="stylesheet" href="css/estilo.css" />
+</head>
+<body>
+    <style>
+        /* ===== Estilo do Login ===== */
+        .login-container {
+            max-width: 350px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
 
-<?php
-// Fecha a conexão com o banco de dados
-$conn->close();
-?>
+        .login-container h2 {
+            color: #6d4c41;
+            margin-bottom: 20px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff9800;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-container button:hover {
+            background-color: #e68900;
+        }
+
+        .erro {
+            color: #e74c3c;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+    </style>
+    <div class="login-container">
+        <h2>Login</h2>
+        <?php if ($erro): ?>
+            <div class="erro"><?= htmlspecialchars($erro) ?></div>
+        <?php endif; ?>
+        <form method="POST" action="">
+            <input type="text" name="login" placeholder="Usuário" required />
+            <input type="password" name="senha" placeholder="Senha" required />
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>
