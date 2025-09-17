@@ -1,33 +1,31 @@
-🍽️ Sistema de Pedidos Online – Versão Simples para Apresentação
+🍽️ Sistema de Pedidos Online – Pastelaria Fidelim (Versão Simples)
+🎯 Objetivo
 
-🎯 Objetivo:
-Permitir que um cliente selecione pastéis, envie um pedido, e o administrador veja e atualize o status desse pedido.
+Desenvolver um sistema online simples para pedidos de pastéis, permitindo que o cliente visualize o cardápio, monte um carrinho de compras e envie o pedido. Um administrador pode visualizar os pedidos e atualizar seus status conforme o preparo.
 
-✅ Como ele cumpre os requisitos?
-
-Requisito                         | Como será implementado
-----------------------------------|-------------------------
-CRUD completo                     | Em duas entidades: Pastéis e Pedidos
-Relacionamento Um para Muitos     | Um pedido tem muitos itens de pedido (pastéis)
-Login com autenticação fake       | Área administrativa com login PHP + SESSION
-Evento JavaScript                 | Alerta confirm() ao remover um item do carrinho
-CSS                               | Estilização básica com CSS ou Bootstrap
-Código modularizado               | Separar arquivos: login, cadastro, páginas, includes, etc
-
-🧱 Estrutura Simples do Banco de Dados (MySQL)
-
+✅ Requisitos Atendidos
+Requisito	Implementação
+CRUD completo	CRUD realizado para entidades Pastéis e Pedidos
+Relacionamento Um para Muitos	Um pedido contém vários itens de pedido (pastéis)
+Login com autenticação (simulada)	Login do administrador com verificação via PHP + SESSION
+Evento JavaScript	Uso do confirm() ao remover itens do carrinho
+Estilização com CSS	Aplicação de CSS ou Bootstrap para layout e responsividade
+Código modularizado	Separação em múltiplos arquivos: login, includes, ações, etc.
+🧱 Estrutura do Banco de Dados (MySQL)
 CREATE DATABASE pastelaria_fidelim
 DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 USE pastelaria_fidelim;
 
+-- Tabela de Usuários (Admin)
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     login VARCHAR(50),
     senha VARCHAR(50)
 );
 
+-- Tabela de Pastéis
 CREATE TABLE pasteis (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
@@ -35,6 +33,7 @@ CREATE TABLE pasteis (
     imagem VARCHAR(255)
 );
 
+-- Tabela de Pedidos
 CREATE TABLE pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     cliente_nome VARCHAR(100),
@@ -42,6 +41,7 @@ CREATE TABLE pedidos (
     data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabela de Itens do Pedido
 CREATE TABLE itens_pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pedido INT,
@@ -51,84 +51,120 @@ CREATE TABLE itens_pedido (
     FOREIGN KEY (id_pastel) REFERENCES pasteis(id)
 );
 
-🖼️ Telas do Sistema (Versão Simples)
+🖼️ Telas do Sistema
+🔐 1. Tela de Login (Admin)
 
-🔓 1. Tela de Login (admin)
-- Login e senha fixos (ex: admin / 1234)
-- Protege a área administrativa
+Acesso restrito ao painel administrativo
 
-🛒 2. Tela do Cardápio (cliente)
-- Lista os pastéis com nome, preço e imagem
-- Botão "Adicionar ao Carrinho"
+Autenticação simples com login fixo (ex: admin / 1234)
 
-🧺 3. Carrinho de Compras
-- Lista de itens adicionados
-- Botão "Finalizar Pedido"
-- Formulário com nome do cliente
+Protegido por SESSION em PHP
 
-👨‍🍳 4. Painel Administrativo
-- Lista todos os pedidos com:
-  - Nome do cliente
-  - Data
-  - Lista dos pastéis
-  - Status (com botão para alterar)
-- Ações: mudar status (Em preparo → Pronto → Entregue)
+🍽️ 2. Tela de Cardápio (Cliente)
 
-🧠 Fluxo Resumido do Sistema
-1. Cliente acessa a página principal e vê o cardápio.
-2. Adiciona pastéis ao carrinho.
-3. Preenche o nome e envia o pedido.
-4. Pedido é salvo no banco com status "Em preparo".
-5. Admin faz login, acessa o painel, vê os pedidos.
-6. Admin altera o status conforme o preparo.
+Exibe lista de pastéis com:
 
+Nome
 
-🗂️ Organização Sugerida de Arquivos
+Preço
 
+Imagem
+
+Botão “Adicionar ao Carrinho”
+
+🛒 3. Carrinho de Compras
+
+Exibe os itens adicionados
+
+Botão para remover item (com confirmação via JavaScript)
+
+Campo para nome do cliente
+
+Botão “Finalizar Pedido”
+
+🧑‍🍳 4. Painel Administrativo
+
+Listagem de todos os pedidos:
+
+Nome do cliente
+
+Data do pedido
+
+Itens solicitados
+
+Status atual
+
+Botões de ação para alterar o status:
+
+"Em preparo" → "Pronto" → "Entregue"
+
+🔄 Fluxo Resumido do Sistema
+graph TD
+    A[Cliente acessa o cardápio] --> B[Adiciona pastéis ao carrinho]
+    B --> C[Preenche nome e finaliza pedido]
+    C --> D[Pedido salvo no banco com status "Em preparo"]
+    D --> E[Admin faz login no painel]
+    E --> F[Admin visualiza e altera o status dos pedidos]
+
+📁 Organização dos Arquivos
 /pastelaria
 │
-├── index.php               → Tela do cardápio
+├── index.php               → Tela de cardápio (cliente)
 ├── carrinho.php            → Carrinho de compras
-├── finalizar_pedido.php    → Envia pedido ao BD
-├── login.php               → Login admin
-├── admin.php               → Painel admin
-├── alterar_status.php      → Altera status do pedido
+├── finalizar_pedido.php    → Salva pedido no banco
+├── login.php               → Tela de login do admin
+├── admin.php               → Painel administrativo
+├── alterar_status.php      → Script para alterar status do pedido
 │
 ├── /includes
-│   ├── db.php              → Conexão com MySQL
-│   ├── header.php          → Cabeçalho
-│   └── footer.php          → Rodapé
+│   ├── db.php              → Conexão com o banco de dados
+│   ├── header.php          → Cabeçalho padrão
+│   └── footer.php          → Rodapé padrão
 │
 ├── /css
-│   └── estilo.css
+│   └── estilo.css          → Estilo visual da aplicação
 │
 ├── /imagens
 │   └── (fotos dos pastéis)
 
-⏱️ Dica de Escopo Simples para Apresentar:
-- Ter apenas 5 pastéis cadastrados manualmente no banco (sem área de cadastro)
-- Fazer o carrinho funcionar com $_SESSION
-- Focar no fluxo cliente → pedido → admin vê e altera status
+🧠 Escopo Ideal para Apresentação
 
+Cadastro prévio de 5 pastéis direto no banco
 
+Carrinho implementado usando $_SESSION
 
-DER
+Foco total no fluxo: cliente → pedido → admin acompanha e atualiza status
 
+Sem necessidade de cadastro/edição de pastéis ou usuários via interface
+
+🔗 DER – Diagrama Entidade Relacionamento
 +------------+          +-------------------+          +--------------------+
 |   Pastel   |          |      Pedido       |          |     ItemPedido     |
 +------------+          +-------------------+          +--------------------+
 | PK id      |1       N | PK id             |1       N | PK id              |
-| nome       |----------| data_hora         |----------| FK pedido_id       |
+| nome       |----------| cliente_nome      |----------| FK pedido_id       |
 | preco      |          | status            |          | FK pastel_id       |
-| imagem     |          | total             |          | quantidade         |
-+------------+          | FK usuario_id     |          | preco_unitario     |
-                        +-------------------+          +--------------------+
+| imagem     |          | data_pedido       |          | quantidade         |
++------------+          +-------------------+          +--------------------+
 
                              1
-Usuário                      |
+Usuario                      |
 +-------------------+        |
-| PK id             |--------
-| nome              |
-| email             |
+| PK id             |--------  (Relacionamento apenas se for expandir o sistema)
+| login             |
 | senha             |
 +-------------------+
+
+📌 Observações Finais
+
+A proposta é simples, mas cobre todos os principais conceitos: sessões, banco de dados relacional, CRUD, MVC básico, modularização, e interação cliente-servidor.
+
+O projeto pode ser facilmente expandido para incluir:
+
+Cadastro de novos pastéis
+
+Histórico de pedidos por cliente
+
+Relatórios e filtros no painel administrativo
+
+Integração com APIs de pagamento ou delivery

@@ -2,13 +2,13 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Pastelaria Online</title>
+    <title>Pastelaria Do Fidelim</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
     <header class="topo">
         <div class="container">
-            <h1> Pastelaria Online</h1>
+            <h1> Pastelaria Do Fidelim</h1>
             <nav class="menu">
                 <a href="index.php">Cardápio</a>
                 <a href="carrinho.php">Carrinho</a>
