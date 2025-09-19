@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_login'] = $usuario['login'];
 
-            // Redireciona conforme o usuário
+            // talvez eu posso tirar isso ----------------------------------------------------------------------------------
             if ($usuario['login'] === 'admin') {
                 header("Location: admin/pedidos.php");
             } else {

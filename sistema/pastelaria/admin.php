@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $delete_id = intval($_POST['delete_id']);
         $sql_delete = "DELETE FROM pedidos WHERE id = $delete_id";
         $conn->query($sql_delete);
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: " . $_SERVER['PHP_SELF']); // entender melhor
         exit();
     }
 
@@ -25,14 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql_update = "UPDATE pedidos SET status = '$status' WHERE id = $pedido_id";
             $conn->query($sql_update);
         }
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: " . $_SERVER['PHP_SELF']); // entender melhor
         exit();
     }
 }
 
 
 
-// Aqui você pode consultar os pedidos para exibir e gerenciar
+// pode consultar os pedidos para exibir e gerenciar - posso tirar talvez -------------------------------------------------------------
 $sql = "SELECT * FROM pedidos ORDER BY data_pedido DESC";
 $resultado = $conn->query($sql);
 
@@ -59,8 +59,8 @@ $resultado = $conn->query($sql);
                     <th>Ações</th>
                 </tr>
             </thead>
-            <tbody>
-            <?php while ($pedido = $resultado->fetch_assoc()): ?>
+            <tbody>                                          
+            <?php while ($pedido = $resultado->fetch_assoc()): ?> 
                 <tr>
                     <td><?= htmlspecialchars($pedido['id']) ?></td>
                     <td><?= htmlspecialchars($pedido['cliente_nome']) ?></td>
@@ -78,7 +78,7 @@ $resultado = $conn->query($sql);
                         </form>
                         <form method="POST" style="display:inline;">
                             <input type="hidden" name="delete_id" value="<?= $pedido['id'] ?>">
-                            <button type="submit" onclick="return confirm('Confirma exclusão?')">Deletar</button>
+                            <button type="submit" onclick="return confirm('Confirma exclusão?')">Deletar</button> 
                         </form>
 
                     </td>

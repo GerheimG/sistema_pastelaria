@@ -22,7 +22,7 @@ $resultado = $conn->query($sql);
     // Verifica se existem registros retornados do banco
     if ($resultado->num_rows > 0) {
         // Loop para percorrer todos os pastéis encontrados
-        while ($pastel = $resultado->fetch_assoc()) {
+        while ($pastel = $resultado->fetch_assoc()) { // entender melhor
             ?>
             <!-- Card individual de cada pastel -->
             <div class="pastel">
