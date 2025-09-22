@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Redireciona dependendo do tipo de usuário (admin ou comum)
             if ($usuario['login'] === 'admin') {
-                header("Location: admin/pedidos.php");
+                header("Location: admin.php");
             } else {
                 header("Location: cardapio.php");
             }
