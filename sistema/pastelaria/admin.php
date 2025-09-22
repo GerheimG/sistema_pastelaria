@@ -1,11 +1,9 @@
 <?php
-// Inicia a sessão para autenticar e manter os dados do admin logado
 session_start();
 
-// Inclui o arquivo de conexão com o banco de dados
 include("includes/db.php");
 
-// ===== Verificação de acesso (protege a página) =====
+// ===== Verificação de acesso =====
 // Verifica se o usuário está logado e se é o 'admin'
 if (!isset($_SESSION['usuario_login']) || $_SESSION['usuario_login'] !== 'admin') {
     // Redireciona para a página de login se não for admin
@@ -19,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // --- Deletar pedido ---
     if (isset($_POST['delete_id'])) {
-        $delete_id = intval($_POST['delete_id']); // Converte o ID para inteiro (segurança)
+        $delete_id = intval($_POST['delete_id']); // Converte o ID para inteiro
 
         // Deleta o pedido com base no ID
         $sql_delete = "DELETE FROM pedidos WHERE id = $delete_id";
@@ -52,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // ===== CONSULTA PARA EXIBIR TODOS OS PEDIDOS =====
-// (Você pode remover esse trecho se quiser carregar os pedidos com AJAX, mas ele é necessário para listar tudo)
 $sql = "SELECT * FROM pedidos ORDER BY data_pedido DESC"; // Lista todos os pedidos do mais recente para o mais antigo
 $resultado = $conn->query($sql);
 ?>

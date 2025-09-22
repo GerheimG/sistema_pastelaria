@@ -2,13 +2,10 @@
 // Inicia a sessão para acessar o carrinho e outras informações do usuário
 session_start();
 
-// Inclui o arquivo de conexão com o banco de dados
 include("includes/db.php");
 
-// Inclui o cabeçalho da página (menu, <head>, etc.)
 include("includes/header.php");
 
-// Verifica se o formulário foi enviado via método POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Protege contra injeção SQL escapando os campos recebidos
     $nome = isset($_POST['nome']) ? mysqli_real_escape_string($conn, $_POST['nome']) : '';
@@ -37,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Limpa o carrinho após finalizar o pedido
                 unset($_SESSION['carrinho']);
 
-                // Redireciona para a página inicial (index.php)
+                // Redireciona para a página inicial
                 header("Location: index.php");
                 exit();
             } else {
@@ -62,7 +59,6 @@ if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
 }
 ?>
 
-<!-- ===== Estilos CSS do formulário de finalização de pedido ===== -->
 <style>
     form {
         max-width: 350px;
@@ -119,7 +115,7 @@ if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
     <label>Nome:</label><br>
     <input type="text" name="nome" placeholder="José Alduiz" required><br><br><br>
 
-    <!-- Campo para o e-mail do cliente (opcional) -->
+    <!-- Campo para o e-mail do cliente -->
     <label>Email:</label><br>
     <input type="email" name="email" placeholder="josealduiz@gmail.com"><br>
 

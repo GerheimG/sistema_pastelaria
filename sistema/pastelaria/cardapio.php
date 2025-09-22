@@ -1,8 +1,6 @@
 <?php 
-// Inclui o arquivo de conexão com o banco de dados (conecta ao MySQL)
 include("includes/db.php"); 
 
-// Inclui o cabeçalho da página (geralmente contém <head>, menus, etc.)
 include("includes/header.php"); 
 ?>
 
@@ -14,13 +12,12 @@ $sql = "SELECT * FROM pasteis";
 $resultado = $conn->query($sql);
 ?>
 
-<!-- Título da página -->
 <h1>Cardápio de Pastéis</h1>
 
 <!-- Container principal para os cards de pastéis -->
 <div class="cardapio">
     <?php
-    // Verifica se a consulta retornou algum resultado (pastéis cadastrados)
+    // Verifica se a consulta retornou algum resultado
     if ($resultado->num_rows > 0) {
         // Loop que percorre cada linha (pastel) retornada pela consulta
         // $pastel recebe os dados de um pastel por vez (em formato de array associativo)
@@ -56,7 +53,7 @@ $resultado = $conn->query($sql);
 </div>
 
 <?php 
-// Inclui o rodapé da página (geralmente contém informações de contato, direitos, etc.)
+// Inclui o rodapé da página
 include("includes/footer.php"); 
 ?>
 

@@ -2,16 +2,14 @@
 // Inicia a sessão para poder usar as variáveis de $_SESSION
 session_start(); 
 
-// Inclui o arquivo de conexão com o banco de dados
 include("includes/db.php");
 
-// Inclui o cabeçalho da página (menu, <head>, etc.)
 include("includes/header.php");  
 
-// ====== LÓGICA DE REMOVER ITEM DO CARRINHO ======
+// ====== REMOVER ITEM DO CARRINHO ======
 // Verifica se foi enviado um formulário para remover 1 unidade de um item
 if (isset($_POST['remover_id'])) {
-    $idRemover = intval($_POST['remover_id']); // Converte o ID recebido para inteiro (segurança)
+    $idRemover = intval($_POST['remover_id']); // Converte o ID recebido para inteiro
 
     // Verifica se o item existe no carrinho
     if (isset($_SESSION['carrinho'][$idRemover])) {
@@ -25,7 +23,7 @@ if (isset($_POST['remover_id'])) {
     }
 }
 
-// ====== LÓGICA DE ADICIONAR ITEM NO CARRINHO ======
+// ====== ADICIONAR ITEM NO CARRINHO ======
 // Verifica se foi enviado um formulário com o ID do pastel
 if (isset($_POST['id'])) {
     $id = intval($_POST["id"]); // Converte o ID para inteiro

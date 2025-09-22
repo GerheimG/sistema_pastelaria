@@ -2,30 +2,26 @@
 // Inicia a sessão para poder usar variáveis de sessão (como login do usuário)
 session_start();
 
-// Inclui o arquivo de conexão com o banco de dados
 include("includes/db.php");
 
 // Verifica se o usuário já está logado
 if (isset($_SESSION['usuario_id'])) {
-    // Se o login for "admin", redireciona para a página administrativa
     if ($_SESSION['usuario_login'] === 'admin') {
         header("Location: admin.php");
     } else {
-        // Caso contrário, redireciona para o cardápio (usuário comum)
         header("Location: cardapio.php");
     }
     // Encerra a execução do script após redirecionamento
     exit();
 }
 
-// Inicializa a variável de erro (vazia inicialmente)
 $erro = '';
 
 // Verifica se o formulário foi enviado via método POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Protege contra injeção SQL escapando os caracteres especiais do login
     $login = mysqli_real_escape_string($conn, $_POST['login']);
-    $senha = $_POST['senha']; // A senha é recebida diretamente (atenção: está em texto puro!)
+    $senha = $_POST['senha']; // A senha é recebida diretamente
 
     // Monta a consulta SQL para buscar o usuário com aquele login
     $sql = "SELECT * FROM usuarios WHERE login = '$login' LIMIT 1";
@@ -36,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Converte o resultado em um array associativo
         $usuario = $resultado->fetch_assoc();
 
-        // Compara a senha enviada com a senha armazenada (atenção: sem uso de hash aqui!)
+        // Compara a senha enviada com a senha armazenada
         if ($senha === $usuario['senha']) {
             // Se a senha estiver correta, salva dados na sessão
             $_SESSION['usuario_id'] = $usuario['id'];
