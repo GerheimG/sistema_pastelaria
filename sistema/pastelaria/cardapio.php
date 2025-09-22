@@ -40,7 +40,7 @@ $resultado = $conn->query($sql);
                     <input type="hidden" name="id" value="<?php echo $pastel['id']; ?>">
                     
                     <!-- Botão para adicionar o pastel ao carrinho -->
-                    <button type="submit" class="btn-carrinho">Adicionar ao Carrinho</button>
+                    <button type="submit" class="btn-add">Adicionar ao Carrinho</button>
                 </form>
             </div>
             <?php

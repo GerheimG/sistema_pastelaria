@@ -64,57 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/estilo.css" />
 </head>
 <body>
-    <style>
-        /* ===== Estilo CSS embutido da página de login ===== */
-        .login-container {
-            max-width: 350px;
-            margin: 80px auto;
-            padding: 30px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-            text-align: center;
-        }
-
-        .login-container h2 {
-            color: #6d4c41;
-            margin-bottom: 20px;
-        }
-
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 16px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .login-container button {
-            width: 100%;
-            padding: 12px;
-            background-color: #ff9800;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .login-container button:hover {
-            background-color: #e68900;
-        }
-
-        .erro {
-            color: #e74c3c;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-    </style>
 
     <!-- Container centralizado para o formulário de login -->
     <div class="login-container">
