@@ -1,44 +1,54 @@
 <?php 
+// Inicia a sessão para poder usar as variáveis de $_SESSION
 session_start(); 
+
+// Inclui o arquivo de conexão com o banco de dados
 include("includes/db.php");
+
+// Inclui o cabeçalho da página (menu, <head>, etc.)
 include("includes/header.php");  
 
-// Verifica se foi enviado um pedido para remover 1 unidade de um item do carrinho
+// ====== LÓGICA DE REMOVER ITEM DO CARRINHO ======
+// Verifica se foi enviado um formulário para remover 1 unidade de um item
 if (isset($_POST['remover_id'])) {
-    $idRemover = intval($_POST['remover_id']); // ID do item a ser removido (convertido para inteiro)
+    $idRemover = intval($_POST['remover_id']); // Converte o ID recebido para inteiro (segurança)
+
+    // Verifica se o item existe no carrinho
     if (isset($_SESSION['carrinho'][$idRemover])) {
         // Diminui a quantidade do item em 1
         $_SESSION['carrinho'][$idRemover]['quantidade'] -= 1;
 
-        // Se a quantidade chegar a 0 ou menos, remove o item do carrinho completamente
+        // Se a quantidade for menor ou igual a zero, remove o item do carrinho
         if ($_SESSION['carrinho'][$idRemover]['quantidade'] <= 0) {
             unset($_SESSION['carrinho'][$idRemover]);
         }
     }
 }
 
-// Verifica se foi enviado um pedido para adicionar um item no carrinho
+// ====== LÓGICA DE ADICIONAR ITEM NO CARRINHO ======
+// Verifica se foi enviado um formulário com o ID do pastel
 if (isset($_POST['id'])) {
-    $id = intval($_POST["id"]); // ID do item a adicionar
+    $id = intval($_POST["id"]); // Converte o ID para inteiro
 
-    // Busca o item no banco de dados
+    // Consulta o pastel no banco de dados pelo ID
     $sql = "SELECT * FROM pasteis WHERE id = $id";
     $resultado = $conn->query($sql);
 
+    // Se o pastel existir no banco
     if ($resultado->num_rows > 0) {
-        $pastel = $resultado->fetch_assoc();
+        $pastel = $resultado->fetch_assoc(); // Pega os dados do pastel como array associativo
 
-        // Inicializa o carrinho na sessão se ainda não existir
+        // Inicializa o carrinho se ele ainda não existir na sessão
         if (!isset($_SESSION["carrinho"])) {
             $_SESSION["carrinho"] = [];
         }
 
-        $id = $pastel['id'];
-        // Se o item já estiver no carrinho, aumenta a quantidade em 1
+        $id = $pastel['id']; // Garante o uso do ID correto
+        // Se o item já estiver no carrinho, aumenta a quantidade
         if (isset($_SESSION['carrinho'][$id])) {
             $_SESSION['carrinho'][$id]['quantidade'] += 1;
         } else {
-            // Caso contrário, adiciona o item com quantidade 1
+            // Se não estiver, adiciona o item com quantidade 1
             $_SESSION['carrinho'][$id] = [
                 'nome' => $pastel['nome'],
                 'preco' => $pastel['preco'],
@@ -49,8 +59,8 @@ if (isset($_POST['id'])) {
 }
 ?>
 
+<!-- ===== CSS embutido para o carrinho ===== -->
 <style>
-    /* Estilização geral do carrinho */
     .carrinho {
         max-width: 600px;
         margin: 30px auto;
@@ -62,7 +72,6 @@ if (isset($_POST['id'])) {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
-    /* Cada item do carrinho */
     .item-carrinho {
         padding: 10px 0;
         border-bottom: 1px solid #eee;
@@ -71,24 +80,20 @@ if (isset($_POST['id'])) {
         align-items: center;
     }
 
-    /* Remove a borda do último item */
     .item-carrinho:last-child {
         border-bottom: none;
     }
 
-    /* Nome do item em destaque */
     .item-nome {
         font-weight: bold;
         color: #333;
     }
 
-    /* Informações adicionais do item */
     .item-info {
         color: #555;
         font-size: 14px;
     }
 
-    /* Área do total do carrinho */
     .total-carrinho {
         margin-top: 20px;
         text-align: right;
@@ -97,7 +102,6 @@ if (isset($_POST['id'])) {
         color: #222;
     }
 
-    /* Botão para excluir item */
     .btn-carrinho {
         background-color: #e74c3c;
         color: white;
@@ -108,7 +112,6 @@ if (isset($_POST['id'])) {
         font-size: 13px;
     }
 
-    /* Efeito hover no botão */
     .btn-carrinho:hover {
         background-color: #c0392b;
     }
@@ -133,29 +136,29 @@ if (isset($_POST['id'])) {
     .btn-finalizar:hover {
         background-color: #1e8449;
     }
-
-
 </style>
 
+<!-- ===== CONTEÚDO DO CARRINHO ===== -->
 <div class="carrinho">
 
 <?php
-// Verifica se o carrinho não está vazio
+// Verifica se o carrinho tem itens
 if (!empty($_SESSION['carrinho'])) {
-    $soma = 0; // Variável para somar o total do carrinho
+    $soma = 0; // Total geral do carrinho
 
     // Percorre cada item do carrinho
     foreach ($_SESSION['carrinho'] as $id => $pastel) {
-        // Calcula o preço total daquele item (preço unitário * quantidade)
+        // Calcula o total daquele pastel (preço x quantidade)
         $precoTotal = $pastel['preco'] * $pastel['quantidade'];
-        $soma += $precoTotal; // Acumula no total geral
+        $soma += $precoTotal; // Soma ao total geral
 
+        // Mostra o card do item no carrinho
         echo '<div class="item-carrinho">';
         echo '  <div>';
         echo '    <div class="item-nome">' . $pastel['nome'] . '</div>';
         echo '    <div class="item-info">Quantidade: ' . $pastel['quantidade'] . '</div>';
 
-        // Formulário para excluir 1 unidade do item do carrinho
+        // Formulário para remover 1 unidade do item
         echo '<form method="POST" style="margin-top: 5px;">';
         echo '  <input type="hidden" name="remover_id" value="' . $id . '">';
         echo '  <button type="submit" class="btn-carrinho" onclick="return confirm(\'Deseja remover este item?\')">Excluir item</button>';
@@ -163,20 +166,22 @@ if (!empty($_SESSION['carrinho'])) {
 
         echo '  </div>';
 
-        // Exibe o preço total do item formatado com duas casas decimais
+        // Mostra o preço total daquele item
         echo '  <div class="item-info">R$ ' . number_format($precoTotal, 2, ',', '.') . '</div>';
         echo '</div>';
     }
 
-    // Exibe o valor total do carrinho formatado
+    // Mostra o total geral do carrinho
     echo '<div class="total-carrinho">Valor total: R$ ' . number_format($soma, 2, ',', '.') . '</div>';
 
 } else {
-    // Caso o carrinho esteja vazio
+    // Caso não haja itens no carrinho
     echo "O carrinho está sem itens.";
 }
 ?>
 </div>
+
+<!-- Botão de Finalizar Pedido -->
 <div class="finalizar-container">
     <a class="btn-finalizar" href="finalizar_pedido.php">Finalizar Pedido</a>
 </div>

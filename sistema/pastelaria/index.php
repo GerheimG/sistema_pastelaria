@@ -1,47 +1,60 @@
 <?php
+// Inicia a sessão para poder usar variáveis de sessão (como login do usuário)
 session_start();
+
+// Inclui o arquivo de conexão com o banco de dados
 include("includes/db.php");
 
-// Se o usuário já está logado, redireciona para o cardápio (ou área admin)
+// Verifica se o usuário já está logado
 if (isset($_SESSION['usuario_id'])) {
+    // Se o login for "admin", redireciona para a página administrativa
     if ($_SESSION['usuario_login'] === 'admin') {
         header("Location: admin.php");
     } else {
+        // Caso contrário, redireciona para o cardápio (usuário comum)
         header("Location: cardapio.php");
     }
+    // Encerra a execução do script após redirecionamento
     exit();
 }
 
+// Inicializa a variável de erro (vazia inicialmente)
 $erro = '';
 
+// Verifica se o formulário foi enviado via método POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Protege contra injeção SQL escapando os caracteres especiais do login
     $login = mysqli_real_escape_string($conn, $_POST['login']);
-    $senha = $_POST['senha'];
+    $senha = $_POST['senha']; // A senha é recebida diretamente (atenção: está em texto puro!)
 
-    // Busca o usuário no banco pelo login
+    // Monta a consulta SQL para buscar o usuário com aquele login
     $sql = "SELECT * FROM usuarios WHERE login = '$login' LIMIT 1";
     $resultado = $conn->query($sql);
 
+    // Verifica se a consulta retornou exatamente 1 usuário
     if ($resultado && $resultado->num_rows === 1) {
+        // Converte o resultado em um array associativo
         $usuario = $resultado->fetch_assoc();
 
-        // Verifica a senha (para teste simples, texto puro; ideal usar password_hash)
+        // Compara a senha enviada com a senha armazenada (atenção: sem uso de hash aqui!)
         if ($senha === $usuario['senha']) {
-            // Login válido, salva na sessão
+            // Se a senha estiver correta, salva dados na sessão
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_login'] = $usuario['login'];
 
-            // talvez eu posso tirar isso ----------------------------------------------------------------------------------
+            // Redireciona dependendo do tipo de usuário (admin ou comum)
             if ($usuario['login'] === 'admin') {
                 header("Location: admin/pedidos.php");
             } else {
                 header("Location: cardapio.php");
             }
-            exit();
+            exit(); // Encerra o script após redirecionar
         } else {
+            // Caso a senha esteja incorreta, define mensagem de erro
             $erro = "Senha incorreta.";
         }
     } else {
+        // Se nenhum usuário for encontrado com aquele login
         $erro = "Usuário não encontrado.";
     }
 }
@@ -51,11 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8" />
     <title>Login - Pastelaria</title>
+    <!-- Importa o CSS externo -->
     <link rel="stylesheet" href="css/estilo.css" />
 </head>
 <body>
     <style>
-        /* ===== Estilo do Login ===== */
+        /* ===== Estilo CSS embutido da página de login ===== */
         .login-container {
             max-width: 350px;
             margin: 80px auto;
@@ -104,13 +118,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-bottom: 10px;
             font-size: 14px;
         }
-
     </style>
+
+    <!-- Container centralizado para o formulário de login -->
     <div class="login-container">
         <h2>Login</h2>
+
+        <!-- Exibe mensagem de erro, se existir -->
         <?php if ($erro): ?>
             <div class="erro"><?= htmlspecialchars($erro) ?></div>
         <?php endif; ?>
+
+        <!-- Formulário de login -->
         <form method="POST" action="">
             <input type="text" name="login" placeholder="Usuário" required />
             <input type="password" name="senha" placeholder="Senha" required />
