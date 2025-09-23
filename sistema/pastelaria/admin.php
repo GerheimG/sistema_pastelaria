@@ -21,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Não vai deletar o ADMIN por acidente
         $sql_check = "SELECT login FROM usuarios WHERE id = $usuario_id";
         $resultado_check = $conn->query(@$sql_check);
-
+        // Verifica se a variável $resultado_check não está vazia e se contém pelo menos uma linha
         if ($resultado_check && $resultado_check->num_rows > 0) {
+            // Obtém a próxima linha do resultado como um array associativo
             $row = $resultado_check->fetch_assoc();
 
             if ($row['login'] !== 'admin') {
