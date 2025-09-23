@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 include("includes/db.php");
 
 // ===== Verificação de acesso =====
@@ -87,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
-
 // ===== CONSULTAS =====
 // Consulta para exibir todos os pedidos
 $sql_pedidos = "SELECT * FROM pedidos ORDER BY data_pedido DESC"; 
@@ -187,7 +185,7 @@ $resultado_cliente = $conn->query($sql_clientes);
                                     Isso permite identificar qual usuário será editado no backend ao enviar o formulário.
                                 -->
                                 <input type="hidden" name="usuario_id" value="<?= $usuario['id'] ?>" />
-                                <input type="text" name="novo_login" value="<?= htmlspecialchars($usuario['login']) ?>" required />
+                                <input type="text" name="novo_login" value="<?= htmlspecialchars($usuario['login']) ?>" required /> <!--O nome do usuário vem do banco de dados-->
                                 <input type="password" name="nova_senha" placeholder="Nova senha" />
                                 <button type="submit" name="editar_usuario">Salvar</button>
                             </form>

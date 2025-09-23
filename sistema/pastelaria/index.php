@@ -1,7 +1,6 @@
 <?php
 // Inicia a sessão para poder usar variáveis de sessão (como login do usuário)
 session_start();
-
 include("includes/db.php");
 
 // Verifica se o usuário já está logado
@@ -14,7 +13,6 @@ if (isset($_SESSION['usuario_id'])) {
     // Encerra a execução do script após redirecionamento
     exit();
 }
-
 $erro = '';
 
 // Verifica se o formulário foi enviado via método POST
@@ -63,9 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Importa o CSS externo -->
     <link rel="stylesheet" href="css/estilo.css">
 </head>
-
 <body>
-
     <!-- Container centralizado para o formulário de login -->
     <div class="login-container">
         <h2>Login</h2>
@@ -84,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div style="margin-top: 20px">
             <button class="btn-link" onclick="window.location.href='cadastro.php'">Cadastrar</button>
         </div>
-
     </div>
 </body>
 </html>

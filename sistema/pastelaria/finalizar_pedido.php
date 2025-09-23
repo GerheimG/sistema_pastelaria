@@ -1,9 +1,7 @@
 <?php
 // Inicia a sessão para acessar o carrinho e outras informações do usuário
 session_start();
-
 include("includes/db.php");
-
 include("includes/header.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $sql_item = "INSERT INTO itens_pedido (id_pedido, id_pastel, quantidade) VALUES ($id_pedido, $id_pastel, $quantidade)";
                     $conn->query($sql_item);
                 }
-
                 // Limpa o carrinho após finalizar o pedido
                 unset($_SESSION['carrinho']);
 
@@ -41,24 +38,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Exibe erro caso a inserção do pedido falhe
                 echo "Erro ao finalizar pedido: " . $conn->error;
             }
-
         } else {
             // Se o carrinho estiver vazio
             echo "<p>Seu carrinho está vazio. Adicione pelo menos um item para finalizar o pedido.</p>";
         }
-
     } else {
         // Se o nome estiver vazio
         echo "Por favor, preencha seu nome.";
     }
 }
-
 // Verifica se existe um parâmetro GET indicando que o pedido foi finalizado com sucesso
 if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
     echo "<p>Pedido finalizado com sucesso!</p>";
 }
 ?>
-
 <!-- ===== Formulário de Finalização de Pedido ===== -->
 <form class="finalizar-pedido-form" action="" method="post">
     <!-- Campo para o nome do cliente -->
@@ -72,7 +65,6 @@ if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
     <!-- Botão para enviar o formulário e finalizar o pedido -->
     <button type="submit">Finalizar Pedido</button>
 </form>
-
 <?php
 // Inclui o rodapé da página
 include("includes/footer.php");
