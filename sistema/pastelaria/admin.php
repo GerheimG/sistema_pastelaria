@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->query($sql_delete);
 
         // Redireciona para a mesma página para atualizar a lista de pedidos
-        header("Location: " . $_SERVER['PHP_SELF']); // $_SERVER['PHP_SELF'] = nome do arquivo atual (ex: pedidos.php)
+        header("Location: " . $_SERVER['PHP_SELF']); // $_SERVER['PHP_SELF'] = nome do arquivo atual (ex: admin.php)
         exit();
     }
 
