@@ -1,9 +1,9 @@
-🍽️ Sistema de Pedidos Online – Pastelaria Fidelim (Versão Simples)
-🎯 Objetivo
+ Sistema de Pedidos Online – Pastelaria Fidelim (Versão Simples)
+ Objetivo
 
 Desenvolver um sistema online simples para pedidos de pastéis, permitindo que o cliente visualize o cardápio, monte um carrinho de compras e envie o pedido. Um administrador pode visualizar os pedidos e atualizar seus status conforme o preparo.
 
-✅ Requisitos Atendidos
+Requisitos Atendidos
 Requisito	Implementação
 CRUD completo	CRUD realizado para entidades Pastéis e Pedidos
 Relacionamento Um para Muitos	Um pedido contém vários itens de pedido (pastéis)
@@ -11,7 +11,7 @@ Login com autenticação (simulada)	Login do administrador com verificação via
 Evento JavaScript	Uso do confirm() ao remover itens do carrinho
 Estilização com CSS	Aplicação de CSS ou Bootstrap para layout e responsividade
 Código modularizado	Separação em múltiplos arquivos: login, includes, ações, etc.
-🧱 Estrutura do Banco de Dados (MySQL)
+ Estrutura do Banco de Dados (MySQL)
 CREATE DATABASE pastelaria_fidelim
 DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_unicode_ci;
@@ -51,8 +51,8 @@ CREATE TABLE itens_pedido (
     FOREIGN KEY (id_pastel) REFERENCES pasteis(id)
 );
 
-🖼️ Telas do Sistema
-🔐 1. Tela de Login (Admin)
+Telas do Sistema
+1. Tela de Login (Admin)
 
 Acesso restrito ao painel administrativo
 
@@ -82,7 +82,7 @@ Campo para nome do cliente
 
 Botão “Finalizar Pedido”
 
-🧑‍🍳 4. Painel Administrativo
+4. Painel Administrativo
 
 Listagem de todos os pedidos:
 
@@ -98,7 +98,7 @@ Botões de ação para alterar o status:
 
 "Em preparo" → "Pronto" → "Entregue"
 
-🔄 Fluxo Resumido do Sistema
+Fluxo Resumido do Sistema
 graph TD
     A[Cliente acessa o cardápio] --> B[Adiciona pastéis ao carrinho]
     B --> C[Preenche nome e finaliza pedido]
@@ -106,7 +106,7 @@ graph TD
     D --> E[Admin faz login no painel]
     E --> F[Admin visualiza e altera o status dos pedidos]
 
-📁 Organização dos Arquivos
+Organização dos Arquivos
 /pastelaria
 │
 ├── index.php               → Tela de cardápio (cliente)
@@ -127,7 +127,7 @@ graph TD
 ├── /imagens
 │   └── (fotos dos pastéis)
 
-🧠 Escopo Ideal para Apresentação
+Escopo Ideal para Apresentação
 
 Cadastro prévio de 5 pastéis direto no banco
 
@@ -155,7 +155,7 @@ Usuario                      |
 | senha             |
 +-------------------+
 
-📌 Observações Finais
+Observações Finais
 
 A proposta é simples, mas cobre todos os principais conceitos: sessões, banco de dados relacional, CRUD, MVC básico, modularização, e interação cliente-servidor.
 
