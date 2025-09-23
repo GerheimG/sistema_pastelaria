@@ -170,6 +170,7 @@ h1 {
     background-color: #e68900;
 }
 
+
 .erro {
     color: #e74c3c;
     margin-bottom: 10px;
@@ -467,4 +468,24 @@ h1 {
     font-weight: bold;
     transition: background-color 0.3s ease;
     margin-left: 10px;
+}
+
+.btn-link {
+
+    padding: 10px 20px;
+    background-color: #ff9800;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-link:hover {
+  background-color: #e68a00;
+  color: white;
+  text-decoration: none;
 }

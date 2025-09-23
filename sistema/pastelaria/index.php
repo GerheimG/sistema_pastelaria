@@ -61,8 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8" />
     <title>Login - Pastelaria</title>
     <!-- Importa o CSS externo -->
-    <link rel="stylesheet" href="css/estilo.css" />
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
+
 <body>
 
     <!-- Container centralizado para o formulário de login -->
@@ -78,8 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST" action="">
             <input type="text" name="login" placeholder="Usuário" required />
             <input type="password" name="senha" placeholder="Senha" required />
-            <button type="submit">Entrar</button>
+            <button type="submit">Entrar</button> 
         </form>
+        <div style="margin-top: 20px">
+            <button class="btn-link" onclick="window.location.href='cadastro.php'">Cadastrar</button>
+        </div>
+
     </div>
 </body>
 </html>
