@@ -12,10 +12,48 @@ if (!isset($_SESSION['usuario_login']) || $_SESSION['usuario_login'] !== 'admin'
 }
 
 // ====== PROCESSAMENTO DOS FORMULÁRIOS ======
-// Se o formulário foi enviado via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // --- Deletar pedido ---
+    // --- DELETAR USUARIO ---
+    if (isset($_POST['delete_usuario_id'])) {
+        $usuario_id = intval($_POST['delete_usuario_id']);
+
+        // Não vai deletar o ADMIN por acidente
+        $sql_check = "SELECT login FROM usuarios WHERE id = $usuario_id";
+        $resultado_check = $conn->query(@$sql_check);
+
+        if ($resultado_check && $resultado_check->num_rows > 0) {
+            $row = $resultado_check->fetch_assoc();
+
+            if ($row['login'] !== 'admin') {
+                $conn->query("DELETE FROM usuarios WHERE id = $usuario_id");
+            }
+        }
+
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+
+    // --- Atualizar usuário ---
+    if (isset($_POST['editar_usuario'])) {
+        $usuario_id = intval($_POST['usuario_id']);
+        $novo_login = $conn->real_escape_string($_POST['novo_login']);
+        $nova_senha = $_POST['nova_senha'];
+
+        if ($nova_senha) {
+            // Atualiza login e senha (atenção: ideal usar hash na senha)
+            $sql = "UPDATE usuarios SET login = '$novo_login', senha = '$nova_senha' WHERE id = $usuario_id";
+        } else {
+            // Atualiza só o login se a senha estiver vazia
+            $sql = "UPDATE usuarios SET login = '$novo_login' WHERE id = $usuario_id";
+        }
+
+        $conn->query($sql);
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+
+    // --- DELETAR PEDIDO ---
     if (isset($_POST['delete_id'])) {
         $delete_id = intval($_POST['delete_id']); // Converte o ID para inteiro
 
@@ -49,10 +87,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ===== CONSULTA PARA EXIBIR TODOS OS PEDIDOS =====
-$sql = "SELECT * FROM pedidos ORDER BY data_pedido DESC"; // Lista todos os pedidos do mais recente para o mais antigo
-$resultado = $conn->query($sql);
+// ===== CONSULTAS =====
+// Consulta para exibir todos os pedidos
+$sql_pedidos = "SELECT * FROM pedidos ORDER BY data_pedido DESC"; 
+$resultado = $conn->query($sql_pedidos);
+
+// Consulta para exibir todos os usuários
+$sql_clientes = "SELECT * FROM usuarios ORDER BY id DESC";
+$resultado_cliente = $conn->query($sql_clientes);
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -70,76 +114,96 @@ $resultado = $conn->query($sql);
         <h1>Pedidos</h1>
 
         <?php if ($resultado && $resultado->num_rows > 0): ?>
-            <!-- 
-                Verifica se a consulta ao banco retornou resultados.
-                Se houver pedidos (linhas encontradas), exibe a tabela.
-            -->
-
-            <!-- Início da tabela de pedidos -->
+            <!-- Tabela de pedidos -->
             <table border="1" cellpadding="10" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>ID Pedido</th>             <!-- Coluna com o ID do pedido -->
-                        <th>Cliente</th>               <!-- Nome do cliente que fez o pedido -->
-                        <th>Status</th>                <!-- Status atual do pedido -->
-                        <th>Data do Pedido</th>        <!-- Data e hora que o pedido foi feito -->
-                        <th>Ações</th>                 <!-- Coluna para botões de ação (editar status, deletar) -->
+                        <th>ID Pedido</th>
+                        <th>Cliente</th>
+                        <th>Status</th>
+                        <th>Data do Pedido</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-
-                <!-- Loop que percorre todos os pedidos encontrados no banco -->
-                <?php while ($pedido = $resultado->fetch_assoc()): ?> 
+                    <?php while ($pedido = $resultado->fetch_assoc()): ?> 
                     <tr>
-                        <!-- Exibe o ID do pedido -->
                         <td><?= htmlspecialchars($pedido['id']) ?></td>
-
-                        <!-- Exibe o nome do cliente (protege contra XSS com htmlspecialchars) -->
                         <td><?= htmlspecialchars($pedido['cliente_nome']) ?></td>
-
-                        <!-- Exibe o status atual do pedido -->
                         <td><?= htmlspecialchars($pedido['status']) ?></td>
-
-                        <!-- Exibe a data e hora do pedido -->
                         <td><?= htmlspecialchars($pedido['data_pedido']) ?></td>
-
                         <td>
-                            <!-- === Formulário para alterar o status do pedido === -->
+                            <!-- Formulário para alterar o status do pedido -->
                             <form action="" method="POST">
-                                <!-- Envia o ID do pedido escondido para saber qual atualizar -->
                                 <input type="hidden" name="pedido_id" value="<?= $pedido['id'] ?>">
-
-                                <!-- Menu suspenso com os 3 status possíveis -->
                                 <select name="status">
-                                    <!-- O valor atual do status vem selecionado -->
                                     <option value="Em Preparo" <?= $pedido['status'] == 'Em Preparo' ? 'selected' : '' ?>>Em Preparo</option>
                                     <option value="Pronto" <?= $pedido['status'] == 'Pronto' ? 'selected' : '' ?>>Pronto</option>
                                     <option value="Entregue" <?= $pedido['status'] == 'Entregue' ? 'selected' : '' ?>>Entregue</option>
                                 </select>
-
-                                <!-- Botão para enviar o formulário e atualizar o status -->
                                 <button type="submit">Atualizar</button>
                             </form>
 
-                            <!-- === Formulário para deletar o pedido === -->
+                            <!-- Formulário para deletar o pedido -->
                             <form method="POST" style="display:inline;">
-                                <!-- Campo oculto com o ID do pedido a ser deletado -->
                                 <input type="hidden" name="delete_id" value="<?= $pedido['id'] ?>">
-
-                                <!-- Botão para deletar, com confirmação via JS -->
                                 <button type="submit" onclick="return confirm('Confirma exclusão?')">Deletar</button>
                             </form>
                         </td>
                     </tr>
-                <?php endwhile; ?>
-
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         <?php else: ?>
-            <!-- Caso a consulta não encontre pedidos, exibe uma mensagem -->
             <p>Nenhum pedido encontrado.</p>
         <?php endif; ?>
 
+    </div>
+
+    <div class="admin-pedidos">
+        <h2>Usuários</h2>
+        <?php if ($resultado_cliente && $resultado_cliente->num_rows > 0): ?>
+            <table border="1" cellpadding="10" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Login</th>
+                        <th>Senha</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($usuario = $resultado_cliente->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($usuario['id']) ?></td>
+                        <td><?= htmlspecialchars($usuario['login']) ?></td>
+                        <td><?= htmlspecialchars($usuario['senha'] ?? '') ?></td> <!-- ajuste conforme seu banco -->
+                        <td>
+                            <!-- Form para editar login e senha -->
+                            <form method="POST" style="display:flex; gap:8px; align-items:center;">
+                                <!--
+                                    Campo oculto que envia o ID do usuário no formulário.
+                                    Isso permite identificar qual usuário será editado no backend ao enviar o formulário.
+                                -->
+                                <input type="hidden" name="usuario_id" value="<?= $usuario['id'] ?>" />
+                                <input type="text" name="novo_login" value="<?= htmlspecialchars($usuario['login']) ?>" required />
+                                <input type="password" name="nova_senha" placeholder="Nova senha" />
+                                <button type="submit" name="editar_usuario">Salvar</button>
+                            </form>
+
+                            <!-- Form para deletar usuário -->
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="delete_usuario_id" value="<?= $usuario['id'] ?>" />
+                                <button type="submit" onclick="return confirm('Confirma exclusão?')">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>Nenhum usuário encontrado.</p>
+        <?php endif; ?>
     </div>
 </body>
 </html>
