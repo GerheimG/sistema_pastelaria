@@ -7,7 +7,12 @@ include("includes/header.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Protege contra injeção SQL escapando os campos recebidos
     $nome = isset($_POST['nome']) ? mysqli_real_escape_string($conn, $_POST['nome']) : '';
+    $telefone = isset($_POST['telefone']) ? mysqli_real_escape_string($conn, $_POST['telefone']) : '';
+    $endereco = isset($_POST['endereco']) ? mysqli_real_escape_string($conn, $_POST['endereco']) : '';
+    $numero = isset($_POST['numero']) ? mysqli_real_escape_string($conn, $_POST['numero']) : '';
     $email = isset($_POST['email']) ? mysqli_real_escape_string($conn, $_POST['email']) : '';
+
+
 
     // Verifica se o campo nome foi preenchido
     if (!empty($nome)) {
@@ -15,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_SESSION['carrinho']) && count($_SESSION['carrinho']) > 0) {
 
             // Cria o pedido na tabela 'pedidos' com o nome do cliente e status inicial
-            $sql_pedido = "INSERT INTO pedidos (cliente_nome, status, data_pedido) VALUES ('$nome', 'Em preparo', NOW())";
+            $sql_pedido = "INSERT INTO pedidos (cliente_nome, status, data_pedido, telefone, email, endereco, numero) VALUES ('$nome', 'Em preparo', NOW(), '$telefone', '$email', '$endereco', '$numero')";
 
             // Se o pedido for inserido com sucesso
             if ($conn->query($sql_pedido) === TRUE) {
@@ -55,11 +60,20 @@ if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
 <!-- ===== Formulário de Finalização de Pedido ===== -->
 <form class="finalizar-pedido-form" action="" method="post">
     <!-- Campo para o nome do cliente -->
-    <label>Nome:</label><br>
-    <input type="text" name="nome" placeholder="José Alduiz" required><br><br><br>
+    <label>Nome:</label>
+    <input type="text" name="nome" placeholder="José Alduiz" required><br>
+
+    <label>Telefone:</label>
+    <input type="text" name="telefone" placeholder="XX XXXX-XXXX" required><br>
+
+    <label>Endereço:</label>
+    <input type="text" name="endereco" placeholder="Rua Alexandre Augusto" required><br>
+
+    <label>Número:</label>
+    <input type="text" name="numero" placeholder="345" required><br>
 
     <!-- Campo para o e-mail do cliente -->
-    <label>Email:</label><br>
+    <label>Email:</label>
     <input type="email" name="email" placeholder="josealduiz@gmail.com"><br>
 
     <!-- Botão para enviar o formulário e finalizar o pedido -->

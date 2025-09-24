@@ -121,6 +121,10 @@ $resultado_cliente = $conn->query($sql_clientes);
                         <th>Cliente</th>
                         <th>Status</th>
                         <th>Data do Pedido</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Endereço</th>
+                        <th>Número</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -131,6 +135,10 @@ $resultado_cliente = $conn->query($sql_clientes);
                         <td><?= htmlspecialchars($pedido['cliente_nome']) ?></td>
                         <td><?= htmlspecialchars($pedido['status']) ?></td>
                         <td><?= htmlspecialchars($pedido['data_pedido']) ?></td>
+                        <td><?= htmlspecialchars($pedido['telefone']) ?></td>
+                        <td><?= htmlspecialchars($pedido['email']) ?></td>
+                        <td><?= htmlspecialchars($pedido['endereco']) ?></td>
+                        <td><?= htmlspecialchars($pedido['numero']) ?></td>
                         <td>
                             <!-- Formulário para alterar o status do pedido -->
                             <form action="" method="POST">
