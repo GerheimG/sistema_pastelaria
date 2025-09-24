@@ -149,6 +149,8 @@ $resultado_cliente = $conn->query($sql_clientes);
                                     <option value="Entregue" <?= $pedido['status'] == 'Entregue' ? 'selected' : '' ?>>Entregue</option>
                                 </select>
                                 <button type="submit">Atualizar</button>
+                                <input type="hidden" name="delete_id" value="<?= $pedido['id'] ?>">
+                                <button type="submit">Concluído</button>
                             </form>
 
                             <!-- Formulário para deletar o pedido -->
@@ -156,12 +158,7 @@ $resultado_cliente = $conn->query($sql_clientes);
                                 <input type="hidden" name="delete_id" value="<?= $pedido['id'] ?>">
                                 <button type="submit" onclick="return confirm('Confirma exclusão?')">Deletar</button>
                             </form>
-                            
-                            <!-- Formulário para confirmar entrega do pedido -->
-                            <form method="POST" style="display:inline;">
-                                <input type="hidden" name="delete_id" value="<?= $pedido['id'] ?>">
-                                <button type="submit" onclick="return confirm('Confirma a entrega?')">Concluído</button>
-                            </form>
+
                         </td>
                     </tr>
                     <?php endwhile; ?>
