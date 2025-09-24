@@ -110,7 +110,7 @@ $resultado_cliente = $conn->query($sql_clientes);
         <!-- Botão de logout -->
         <a href="logout.php">Sair</a>
 
-        <h1>Pedidos</h1>
+        <h2>Pedidos</h2>
 
         <?php if ($resultado && $resultado->num_rows > 0): ?>
             <!-- Tabela de pedidos -->
@@ -156,6 +156,12 @@ $resultado_cliente = $conn->query($sql_clientes);
                                 <input type="hidden" name="delete_id" value="<?= $pedido['id'] ?>">
                                 <button type="submit" onclick="return confirm('Confirma exclusão?')">Deletar</button>
                             </form>
+                            
+                            <!-- Formulário para confirmar entrega do pedido -->
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="delete_id" value="<?= $pedido['id'] ?>">
+                                <button type="submit" onclick="return confirm('Confirma a entrega?')">Concluído</button>
+                            </form>
                         </td>
                     </tr>
                     <?php endwhile; ?>
@@ -187,7 +193,7 @@ $resultado_cliente = $conn->query($sql_clientes);
                         <td><?= htmlspecialchars($usuario['senha'] ?? '') ?></td> <!-- ajuste conforme seu banco -->
                         <td>
                             <!-- Form para editar login e senha -->
-                            <form method="POST" style="display:flex; gap:8px; align-items:center;">
+                            <form method="POST" style="display:inline; gap:8px; align-items:center;">
                                 <!--
                                     Campo oculto que envia o ID do usuário no formulário.
                                     Isso permite identificar qual usuário será editado no backend ao enviar o formulário.
