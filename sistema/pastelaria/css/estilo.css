@@ -7,12 +7,131 @@ body {
     color: #333;
 }
 
+/* ===== Cabeçalho / Topo ===== */
+.topo {
+    background-color: #ffc107;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.topo .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.topo h1 {
+    font-size: 2em;
+    margin: 0;
+    color: #4a2e00;
+}
+
+/* ===== Menu ===== */
+.menu {
+    margin-top: 10px;
+}
+
+.menu a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #4a2e00;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.menu a:hover {
+    color: #000;
+}
+
 /* ===== Título Principal ===== */
 h1 {
     text-align: center;
     margin-top: 20px;
     color: #6d4c41;
     font-size: 2em;
+}
+
+/* ===== Botões Gerais ===== */
+.btn-add {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    font-size: 0.95em;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add:hover {
+    background-color: #e68900;
+}
+
+.btn-carrinho {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-carrinho:hover {
+    background-color: #c0392b;
+}
+
+.btn-finalizar {
+    display: inline-block;
+    background-color: #27ae60;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-finalizar:hover {
+    background-color: #1e8449;
+}
+
+.btn-link {
+    padding: 10px 20px;
+    background-color: #ff9800;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-link:hover {
+    background-color: #e68a00;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-logout {
+    display: inline-block;
+    padding: 10px 16px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
 }
 
 /* ===== Container dos Pastéis ===== */
@@ -36,15 +155,10 @@ h1 {
     transition: transform 0.2s ease;
 }
 
-.preco {
-    font-weight: bold;
-}
-
 .pastel:hover {
     transform: scale(1.03);
 }
 
-/* ===== Imagem do Pastel ===== */
 .pastel img {
     width: 150px;
     height: 150px;
@@ -53,38 +167,23 @@ h1 {
     margin-bottom: 10px;
 }
 
-/* ===== Nome do Pastel ===== */
 .pastel h3 {
     font-size: 1.1em;
     color: #4e342e;
     margin: 10px 0 5px;
 }
 
-/* ===== Preço ===== */
 .pastel p {
     font-size: 1em;
     color: #666;
     margin: 5px 0 10px;
 }
 
-/* ===== Botão: Adicionar ao Carrinho ===== */
-.btn-add {
-    background-color: #ff9800;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    font-size: 0.95em;
+.preco {
     font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.btn-add:hover {
-    background-color: #e68900;
-}
-
-
+/* ===== Carrinho de Compras ===== */
 .carrinho {
     max-width: 600px;
     margin: 30px auto;
@@ -126,131 +225,10 @@ h1 {
     color: #222;
 }
 
- /* ===== Estilo CSS embutido da página de login ===== */
-.login-container {
-    max-width: 350px;
-    margin: 80px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    text-align: center;
-}
-
-.login-container h2 {
-    color: #6d4c41;
-    margin-bottom: 20px;
-}
-
-.login-container input[type="text"],
-.login-container input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.login-container button {
-    width: 100%;
-    padding: 12px;
-    background-color: #ff9800;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.login-container button:hover {
-    background-color: #e68900;
-}
-
-
-.erro {
-    color: #e74c3c;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-
-.carrinho {
-        max-width: 600px;
-        margin: 30px auto;
-        padding: 20px;
-        border: 1px solid #bbb;
-        border-radius: 8px;
-        font-family: Arial, sans-serif;
-        background-color: #fdfdfd;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.item-carrinho {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.item-carrinho:last-child {
-    border-bottom: none;
-}
-
-.item-nome {
-    font-weight: bold;
-    color: #333;
-}
-
-.item-info {
-    color: #555;
-    font-size: 14px;
-}
-
-.total-carrinho {
-    margin-top: 20px;
-    text-align: right;
-    font-size: 16px;
-    font-weight: bold;
-    color: #222;
-}
-
-.btn-carrinho {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.btn-carrinho:hover {
-    background-color: #c0392b;
-}
-
+/* ===== Finalizar Pedido ===== */
 .finalizar-container {
     text-align: center;
     margin-top: 25px;
-}
-
-.btn-finalizar {
-    display: inline-block;
-    background-color: #27ae60;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
-}
-
-.btn-finalizar:hover {
-    background-color: #1e8449;
 }
 
 .finalizar-pedido-form {
@@ -301,6 +279,57 @@ h1 {
     background-color: #e68900;
 }
 
+/* ===== Página de Login ===== */
+.login-container {
+    max-width: 350px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.login-container h2 {
+    color: #6d4c41;
+    margin-bottom: 20px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff9800;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+    background-color: #e68900;
+}
+
+.erro {
+    color: #e74c3c;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* ===== Página de Administração de Pedidos ===== */
 .admin-pedidos {
     font-family: Arial, sans-serif;
     background-color: #f6f7fb;
@@ -329,6 +358,7 @@ h1 {
 .admin-pedidos a[href="logout.php"]:hover {
     background-color: #a93226;
 }
+
 .admin-pedidos table {
     width: 100%;
     border-collapse: collapse;
@@ -342,7 +372,8 @@ h1 {
     background-color: #f0f0f0;
 }
 
-.admin-pedidos table th, .admin-pedidos table td {
+.admin-pedidos table th,
+.admin-pedidos table td {
     padding: 14px 12px;
     text-align: left;
     border-bottom: 1px solid #eee;
@@ -408,6 +439,7 @@ h1 {
     font-size: 16px;
 }
 
+/* ===== Rodapé ===== */
 .rodape {
     background-color: #f4f4f4;
     padding: 15px 0;
@@ -416,80 +448,9 @@ h1 {
     font-size: 0.95em;
     border-top: 1px solid #ddd;
     margin-top: 40px;
-        }
-
-.topo {
-    background-color: #ffc107;
-    padding: 20px 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
 }
 
-.topo .container {
-    width: 90%;
-    max-width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.topo h1 {
-    font-size: 2em;
-    margin: 0;
-    color: #4a2e00;
-}
-
-.menu {
-    margin-top: 10px;
-}
-
-.menu a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #4a2e00;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.menu a:hover {
-    color: #000;
-}
-
-.btn-logout {
-    display: inline-block;
-    padding: 10px 16px;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    margin-left: 10px;
-}
-
-.btn-link {
-
-    padding: 10px 20px;
-    background-color: #ff9800;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-    border: none;
-}
-
-.btn-link:hover {
-  background-color: #e68a00;
-  color: white;
-  text-decoration: none;
-}
-
+/* ===== Personalizações extras ===== */
 .botao-entregar button {
     color: #1e8449;
 }
-
