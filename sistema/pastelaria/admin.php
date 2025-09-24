@@ -150,7 +150,7 @@ $resultado_cliente = $conn->query($sql_clientes);
                                 </select>
                                 <button type="submit">Atualizar</button>
                                 <input type="hidden" name="delete_id" value="<?= $pedido['id'] ?>">
-                                <button type="submit">Concluído</button>
+                                <button type="submit">Concluído</button> <!--ARRUMA ISSO-->
                             </form>
 
                             <!-- Formulário para deletar o pedido -->
